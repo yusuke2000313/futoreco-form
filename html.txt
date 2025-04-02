@@ -1,0 +1,38 @@
+<!DOCTYPE html>
+<html lang="ja">
+<head>
+  <meta charset="UTF-8" />
+  <title>ふとレコ投稿フォーム</title>
+</head>
+<body>
+  <h1>ふとレコ投稿</h1>
+  <form onsubmit="submitPost(); return false;">
+    <label>ニックネーム: <input type="text" id="user" /></label><br/>
+    <label>グループコード: <input type="text" id="group" /></label><br/>
+    <label>日付: <input type="text" id="date" placeholder="2025/04/30"></label><br/>
+    <label>本文: <textarea id="text"></textarea></label><br/>
+    <label>画像URL（任意）: <input type="text" id="image" placeholder="https://example.com/image.jpg"></label><br/>
+    <button type="submit">送信</button>
+  </form>
+  <script>
+    function submitPost() {
+      const user = document.getElementById('user').value;
+      const group = document.getElementById('group').value;
+      const date = document.getElementById('date').value;
+      const text = document.getElementById('text').value;
+      const image = document.getElementById('image').value;
+
+      fetch("https://script.google.com/macros/s/AKfycbz60Vr0_CfUGXR5i-ln50bdl_PMbGfAs67EAwg8C1GsAVmOoTMaRInYcWwVWsz6zHs/exec", {
+        method: "POST",
+        headers: {
+          "Content-Type": "application/json"
+        },
+        body: JSON.stringify({ user, group, date, text, image })
+      })
+      .then(response => response.text())
+      .then(msg => alert("送信結果: " + msg))
+      .catch(err => alert("エラー: " + err));
+    }
+  </script>
+</body>
+</html>
