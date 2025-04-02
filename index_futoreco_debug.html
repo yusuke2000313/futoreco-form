@@ -1,0 +1,81 @@
+<!DOCTYPE html>
+<html lang="ja">
+<head>
+  <meta charset="UTF-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0">
+  <title>ふとレコ投稿フォーム</title>
+  <style>
+    body {
+      font-family: sans-serif;
+      background-color: #f9f7f4;
+      padding: 20px;
+    }
+    .container {
+      max-width: 500px;
+      margin: 0 auto;
+      background: #fff;
+      padding: 20px;
+      border-radius: 12px;
+      box-shadow: 0 2px 8px rgba(0, 0, 0, 0.05);
+    }
+    textarea, input[type="text"] {
+      width: 100%;
+      padding: 10px;
+      margin-top: 10px;
+      margin-bottom: 20px;
+      border-radius: 6px;
+      border: 1px solid #ccc;
+      font-size: 1em;
+    }
+    button {
+      background-color: #d2c6ff;
+      color: #333;
+      border: none;
+      padding: 12px 24px;
+      border-radius: 6px;
+      font-size: 1em;
+      cursor: pointer;
+    }
+  </style>
+</head>
+<body>
+  <div class="container">
+    <h2>今日のふとレコ</h2>
+    <label>日付（例：2025/04/20）</label>
+    <input type="text" id="date" placeholder="2025/04/20">
+    <label>今日の気づき・出来事</label>
+    <textarea id="text" rows="5" placeholder="今日感じた“ふと”をここに書いてください"></textarea>
+    <label>写真URL（任意）</label>
+    <input type="text" id="image" placeholder="https://example.com/image.jpg">
+    <button onclick="submitPost()">送信する</button>
+  </div>
+
+  <script>
+    function submitPost() {
+      const date = document.getElementById('date').value;
+      const text = document.getElementById('text').value;
+      const image = document.getElementById('image').value;
+
+      if (!date || !text) {
+        alert("日付と本文は必須です。");
+        return;
+      }
+
+      fetch("https://script.google.com/macros/s/AKfycbz60Vr0_CfUGXR5i-ln50bdl_PMbGfAs67EAwg8C1GsAVmOoTMaRInYcWwVWsz6zHs/exec", {
+        method: "POST",
+        headers: { "Content-Type": "application/json" },
+        body: JSON.stringify({ date, text, image })
+      })
+      .then(res => res.text())
+      .then(msg => {
+        alert("送信結果：" + msg);  // ← ここでサーバーからの応答を表示
+        document.getElementById('text').value = "";
+        document.getElementById('image').value = "";
+      })
+      .catch(err => {
+        alert("送信に失敗しました: " + err);
+      });
+    }
+  </script>
+</body>
+</html>
